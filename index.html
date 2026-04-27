@@ -1,18 +1,19 @@
 <!DOCTYPE html><html>
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Electrical Catalogue</title><style>
+<title>Catalogue</title><style>
 body {font-family: Arial; margin:0; background:#f5f5f5;}
 .topbar {display:flex; overflow-x:auto; background:#fff; padding:10px; position:sticky; top:0;}
 .topbar div {margin-right:10px; padding:8px 12px; background:#eee; border-radius:20px; cursor:pointer;}
 .product {background:#fff; margin:10px; padding:10px; border-radius:10px;}
 .cartbar {position:fixed; bottom:0; width:100%; background:#000; color:#fff; padding:10px; display:flex; justify-content:space-between;}
-button {padding:5px 10px;}
+.cartscreen {position:fixed; top:0; left:0; width:100%; height:100%; background:#fff; overflow:auto; display:none; padding:10px;}
 </style></head><body><div class="topbar" id="categories"></div>
 <div id="products"></div><div class="cartbar">
 <span id="total">₹0</span>
 <button onclick="openCart()">View Order</button>
-</div><script>
+</div><div class="cartscreen" id="cartScreen"></div><script>
+
 let sheetURL = "https://opensheet.elk.sh/1BjnRPnIEpIUAkoQ1tZ8wtQe55xN7APM6nmCV-ta5tCI/Products";
 
 let products = [];
@@ -28,7 +29,7 @@ fetch(sheetURL)
 
 function renderCategories(){
   let cats = ["All", ...new Set(products.map(p=>p.category))];
-  let html = "";
+  let html="";
   cats.forEach(c=>{
     html += `<div onclick="filterCategory('${c}')">${c}</div>`;
   });
@@ -46,7 +47,6 @@ function renderProducts(list){
     let boxPrice = p.price * p.box_qty;
     html += `
     <div class="product">
-      <img src="${p.image_url}" width="100%">
       <h3>${p.name}</h3>
       <p>₹${p.price}/pc</p>
       <p>Box: ${p.box_qty} pcs → ₹${boxPrice}</p>
@@ -57,8 +57,20 @@ function renderProducts(list){
 }
 
 function addToCart(id){
-  if(!cart[id]) cart[id]=1;
-  else cart[id]++;
+  cart[id] = (cart[id] || 0) + 1;
+  updateTotal();
+}
+
+function removeItem(id){
+  delete cart[id];
+  openCart();
+  updateTotal();
+}
+
+function changeQty(id, change){
+  cart[id] += change;
+  if(cart[id] <= 0) delete cart[id];
+  openCart();
   updateTotal();
 }
 
@@ -72,7 +84,44 @@ function updateTotal(){
 }
 
 function openCart(){
-  let msg="Order Details:\n";
+  let html="<h2>Your Order</h2>";
+
+  for(let id in cart){
+    let p = products.find(x=>x.id==id);
+    let qty = cart[id];
+    let pcs = qty * p.box_qty;
+    let price = p.price * pcs;
+
+    html += `
+    <div>
+      <b>${p.name}</b><br>
+      ${qty} box (${pcs} pcs) - ₹${price}<br>
+      <button onclick="changeQty(${id},1)">+</button>
+      <button onclick="changeQty(${id},-1)">-</button>
+      <button onclick="removeItem(${id})">Remove</button>
+      <hr>
+    </div>`;
+  }
+
+  html += `<button onclick="checkout()">Confirm Order</button>
+           <button onclick="closeCart()">Close</button>`;
+
+  document.getElementById("cartScreen").innerHTML = html;
+  document.getElementById("cartScreen").style.display="block";
+}
+
+function closeCart(){
+  document.getElementById("cartScreen").style.display="none";
+}
+
+function checkout(){
+  let shop = prompt("Shop Name:");
+  if(!shop) return;
+
+  let mobile = prompt("Mobile Number:");
+  if(!mobile) return;
+
+  let msg = `Shop: ${shop}\nMobile: ${mobile}\n\nOrder:\n`;
   let total=0;
 
   for(let id in cart){
@@ -85,12 +134,10 @@ function openCart(){
     msg += `${p.name} - ${qty} box (${pcs} pcs) - ₹${price}\n`;
   }
 
-  let shop = prompt("Enter Shop Name:");
-  let mobile = prompt("Enter Mobile Number:");
-
-  msg = `Shop: ${shop}\nMobile: ${mobile}\n\n` + msg + `\nTotal: ₹${total}`;
+  msg += `\nTotal: ₹${total}`;
 
   window.open(`https://wa.me/917859960073?text=${encodeURIComponent(msg)}`);
 }
+
 </script></body>
 </html>
