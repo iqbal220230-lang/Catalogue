@@ -1,0 +1,96 @@
+<!DOCTYPE html><html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Electrical Catalogue</title><style>
+body {font-family: Arial; margin:0; background:#f5f5f5;}
+.topbar {display:flex; overflow-x:auto; background:#fff; padding:10px; position:sticky; top:0;}
+.topbar div {margin-right:10px; padding:8px 12px; background:#eee; border-radius:20px; cursor:pointer;}
+.product {background:#fff; margin:10px; padding:10px; border-radius:10px;}
+.cartbar {position:fixed; bottom:0; width:100%; background:#000; color:#fff; padding:10px; display:flex; justify-content:space-between;}
+button {padding:5px 10px;}
+</style></head><body><div class="topbar" id="categories"></div>
+<div id="products"></div><div class="cartbar">
+<span id="total">₹0</span>
+<button onclick="openCart()">View Order</button>
+</div><script>
+let sheetURL = "PASTE_YOUR_GOOGLE_SHEET_JSON_LINK_HERE";
+
+let products = [];
+let cart = {};
+
+fetch(sheetURL)
+.then(res => res.json())
+.then(data => {
+  products = data;
+  renderCategories();
+  renderProducts(products);
+});
+
+function renderCategories(){
+  let cats = ["All", ...new Set(products.map(p=>p.category))];
+  let html = "";
+  cats.forEach(c=>{
+    html += `<div onclick="filterCategory('${c}')">${c}</div>`;
+  });
+  document.getElementById("categories").innerHTML = html;
+}
+
+function filterCategory(cat){
+  if(cat=="All"){renderProducts(products); return;}
+  renderProducts(products.filter(p=>p.category==cat));
+}
+
+function renderProducts(list){
+  let html="";
+  list.forEach(p=>{
+    let boxPrice = p.price * p.box_qty;
+    html += `
+    <div class="product">
+      <img src="${p.image_url}" width="100%">
+      <h3>${p.name}</h3>
+      <p>₹${p.price}/pc</p>
+      <p>Box: ${p.box_qty} pcs → ₹${boxPrice}</p>
+      <button onclick="addToCart(${p.id})">Add Box</button>
+    </div>`;
+  });
+  document.getElementById("products").innerHTML = html;
+}
+
+function addToCart(id){
+  if(!cart[id]) cart[id]=1;
+  else cart[id]++;
+  updateTotal();
+}
+
+function updateTotal(){
+  let total=0;
+  for(let id in cart){
+    let p = products.find(x=>x.id==id);
+    total += p.price * p.box_qty * cart[id];
+  }
+  document.getElementById("total").innerText = "₹"+total;
+}
+
+function openCart(){
+  let msg="Order Details:\n";
+  let total=0;
+
+  for(let id in cart){
+    let p = products.find(x=>x.id==id);
+    let qty = cart[id];
+    let pcs = qty * p.box_qty;
+    let price = p.price * pcs;
+    total += price;
+
+    msg += `${p.name} - ${qty} box (${pcs} pcs) - ₹${price}\n`;
+  }
+
+  let shop = prompt("Enter Shop Name:");
+  let mobile = prompt("Enter Mobile Number:");
+
+  msg = `Shop: ${shop}\nMobile: ${mobile}\n\n` + msg + `\nTotal: ₹${total}`;
+
+  window.open(`https://wa.me/917859960073?text=${encodeURIComponent(msg)}`);
+}
+</script></body>
+</html>
