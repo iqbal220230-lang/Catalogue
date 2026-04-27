@@ -8,6 +8,8 @@ body {font-family: Arial; margin:0; background:#f5f5f5;}
 .product {background:#fff; margin:10px; padding:10px; border-radius:10px;}
 .cartbar {position:fixed; bottom:0; width:100%; background:#000; color:#fff; padding:10px; display:flex; justify-content:space-between;}
 .cartscreen {position:fixed; top:0; left:0; width:100%; height:100%; background:#fff; overflow:auto; display:none; padding:10px;}
+input {width:100%; padding:10px; margin-bottom:10px;}
+button {padding:8px 12px; margin:3px;}
 </style></head><body><div class="topbar" id="categories"></div>
 <div id="products"></div><div class="cartbar">
 <span id="total">₹0</span>
@@ -103,8 +105,10 @@ function openCart(){
     </div>`;
   }
 
-  html += `<button onclick="checkout()">Confirm Order</button>
-           <button onclick="closeCart()">Close</button>`;
+  html += `
+  <button onclick="checkout()">Confirm Order</button>
+  <button onclick="closeCart()">Close</button>
+  `;
 
   document.getElementById("cartScreen").innerHTML = html;
   document.getElementById("cartScreen").style.display="block";
@@ -115,11 +119,25 @@ function closeCart(){
 }
 
 function checkout(){
-  let shop = prompt("Shop Name:");
-  if(!shop) return;
+  let html = `
+  <h2>Enter Details</h2>
+  <input id="shopName" placeholder="Shop Name">
+  <input id="mobile" placeholder="Mobile Number">
+  <button onclick="sendOrder()">Send Order</button>
+  <button onclick="openCart()">Back</button>
+  `;
 
-  let mobile = prompt("Mobile Number:");
-  if(!mobile) return;
+  document.getElementById("cartScreen").innerHTML = html;
+}
+
+function sendOrder(){
+  let shop = document.getElementById("shopName").value;
+  let mobile = document.getElementById("mobile").value;
+
+  if(!shop || !mobile){
+    alert("Please fill details");
+    return;
+  }
 
   let msg = `Shop: ${shop}\nMobile: ${mobile}\n\nOrder:\n`;
   let total=0;
@@ -136,7 +154,7 @@ function checkout(){
 
   msg += `\nTotal: ₹${total}`;
 
-  window.open(`https://wa.me/917859960073?text=${encodeURIComponent(msg)}`);
+  window.location.href = `https://wa.me/917859960073?text=${encodeURIComponent(msg)}`;
 }
 
 </script></body>
