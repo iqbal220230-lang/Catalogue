@@ -154,12 +154,15 @@ function renderCategories(){
   let cats = ["All", ...new Set(products.map(p=>p.category))];
   let html="";
   cats.forEach(c=>{
-    html += `<div onclick="filterCategory('${c}')">${c}</div>`;
+    html += `<div onclick="filterCategory('${c}', this)">${c}</div>`;
   });
   document.getElementById("categories").innerHTML = html;
 }
 
-function filterCategory(cat){
+function filterCategory(cat, el){
+  document.querySelectorAll('.topbar div').forEach(x=>x.classList.remove('active'));
+  el.classList.add('active');
+
   if(cat=="All"){renderProducts(products); return;}
   renderProducts(products.filter(p=>p.category==cat));
 }
@@ -180,7 +183,7 @@ function renderProducts(list){
       <h3>${p.name}</h3>
       <div class="price">₹${p.price}/pc</div>
       <div class="box">Box: ${p.box_qty} pcs → ₹${boxPrice}</div>
-      <button onclick="addToCart(${p.id})">Add Box</button>
+      <button class="addbtn" onclick="addToCart(${p.id})">+ Add Box</button>
     </div>`;
   });
 
