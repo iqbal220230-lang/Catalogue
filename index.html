@@ -96,7 +96,16 @@ button {
   background:#fff;
   color:#000;
 }
-
+#overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.4);
+  display: none;
+  z-index: 998;
+}
 /* Cart screen */
 .cartscreen {
   position:fixed;
@@ -104,7 +113,7 @@ button {
   bottom:0;
   left:0;
   width:100%;
-  height:85%;
+  height:90%;
   background:#fff;
   overflow:auto;
   display:none;
@@ -156,7 +165,10 @@ input {
 <div id="products"></div><div class="cartbar">
 <span id="total">₹0</span>
 <button onclick="openCart()">View Order</button>
-</div><div class="cartscreen" id="cartScreen"></div><script>
+</div>
+  <div id="overlay" onclick="closeCart()"></div>
+  <div class="cartscreen" id="cartScreen"></div>
+  <script>
 
 let sheetURL = "https://opensheet.elk.sh/1BjnRPnIEpIUAkoQ1tZ8wtQe55xN7APM6nmCV-ta5tCI/Products";
 
