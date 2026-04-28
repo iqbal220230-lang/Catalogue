@@ -269,12 +269,12 @@ function openCart(){
       <hr>
     </div>`;
   }
+<button onclick="checkout()" class="addbtn">
+📲 Order on WhatsApp
+</button>
 
-  html += `
-  <button onclick="checkout()">Confirm Order</button>
-  <button onclick="closeCart()">Close</button>
-  `;
-
+<button onclick="closeCart()">Close</button>
+`;
   document.getElementById("cartScreen").innerHTML = html;
   document.getElementById("cartScreen").style.display="block";
 }
@@ -288,39 +288,46 @@ function checkout(){
   <h2>Enter Details</h2>
   <input id="shopName" placeholder="Shop Name">
   <input id="mobile" placeholder="Mobile Number">
-  <button onclick="sendOrder()">Send Order</button>
+  <button onclick="sendWhatsAppOrder()">Send Order</button>
   <button onclick="openCart()">Back</button>
   `;
 
   document.getElementById("cartScreen").innerHTML = html;
 }
+function sendWhatsAppOrder() {
+  let name = document.getElementById("shopName").value;
+let phone = document.getElementById("mobile").value;
 
-function sendOrder(){
-  let shop = document.getElementById("shopName").value;
-  let mobile = document.getElementById("mobile").value;
-
-  if(!shop || !mobile){
-    alert("Please fill details");
+  if (!name || !phone) {
+    alert("Please enter name and mobile number");
     return;
   }
 
-  let msg = `Shop: ${shop}\nMobile: ${mobile}\n\nOrder:\n`;
-  let total=0;
+  let message = "🧾 *ORDER SUMMARY*%0A━━━━━━━━━━━━%0A";
+  message += "👤 Name: " + name + "%0A";
+  message += "📞 Phone: " + phone + "%0A%0A";
 
-  for(let id in cart){
-    let p = products.find(x=>x.id==id);
+  let total = 0;
+
+  for (let id in cart) {
+    let p = products.find(x => x.id == id);
     let qty = cart[id];
     let pcs = qty * p.box_qty;
     let price = p.price * pcs;
-    total += price;
 
-    msg += `${p.name} - ${qty} box (${pcs} pcs) - ₹${price}\n`;
+    message += "🔹 " + p.name + "%0A";
+message += "   " + qty + " box (" + pcs + " pcs) = ₹" + price + "%0A%0A";
+
+    total += price;
   }
 
-  msg += `\nTotal: ₹${total}`;
+  message += "____________%0A💰 *Total: ₹" + total + "*";
 
-  window.location.href = `whatsapp://send?phone=917859960073&text=${encodeURIComponent(msg)}`;
+  let phoneNumber = "917859960073"; // 🔴 CHANGE THIS
+
+  let url = "https://wa.me/" + phoneNumber + "?text=" + message;
+
+  window.open(url, "_blank");
 }
-
 </script></body>
 </html>
