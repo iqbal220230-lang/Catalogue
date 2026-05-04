@@ -348,9 +348,9 @@ function searchProduct(text){
 }
 
 function renderProducts(list){
-  let html="";
-  
-list.forEach(p => {
+  let html = "";
+
+  list.forEach(p => {
     let boxPrice = p.price * p.box_qty;
 
     html += `
@@ -363,21 +363,23 @@ list.forEach(p => {
     <div class="box">Box: ${p.box_qty} pcs → ₹${boxPrice}</div>
 
     ${cart[p.id] ? `
-      <div class="qty-control">
-        <button class="minus" onclick="changeQty(${p.id}, -1)">−</button>
-<button class="plus" onclick="changeQty(${p.id}, 1)">+</button>
-      </div>
-    ` : `
-      <button class="addbtn" onclick="addToCart(${p.id})">
-        + Add Box
-      </button>
-    `}
+<div class="qty-control">
+  <button class="minus" onclick="changeQty(${p.id}, -1)">−</button>
+  <span>${cart[p.id]} ${cart[p.id] > 1 ? "boxes" : "box"}</span>
+  <button class="plus" onclick="changeQty(${p.id}, 1)">+</button>
+</div>
+` : `
+<button class="addbtn" onclick="addToCart(${p.id})">
+  + Add Box
+</button>
+`}
   </div>
 </div>
 `;
+  }); // ✅ VERY IMPORTANT (you missed this)
 
   document.getElementById("products").innerHTML = html;
-  }
+}
 
 function addToCart(id){
   cart[id] = (cart[id] || 0) + 1;
