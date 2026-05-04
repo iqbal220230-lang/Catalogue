@@ -104,24 +104,30 @@
   border: none;
   border-radius: 10px;
 
-  width: 100%;
-  display: block;
+  width: 95%;
+  max-width: 500px;
 
+  display: block;
   text-align: center;
-  margin: 10px 0;
+  margin: 10px auto;
 
   box-sizing: border-box;
 }
 .backbtn {
-  width: 100%;
+  width: 95%;
+  max-width: 500px;
+
   padding: 14px;
   margin-top: 10px;
+
   border-radius: 10px;
   border: none;
   background: #ccc;
 
   display: block;
   text-align: center;
+  margin-left: auto;
+  margin-right: auto;
 
   box-sizing: border-box;
 }
@@ -167,9 +173,11 @@
   border-top-right-radius: 20px;
   padding: 15px;
   overflow: auto;
-  display: none;
+  display: flex;
   z-index: 1000;
-  text-align: center;
+flex-direction: column;
+align-items: center;
+text-align: center;
 }
 
 /* Cart buttons */
