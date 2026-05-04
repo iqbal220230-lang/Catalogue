@@ -354,40 +354,27 @@ list.forEach(p => {
     let boxPrice = p.price * p.box_qty;
 
     html += `
-    <div class="product">
-      <img src="${p.image_url}">
-      
-      <div class="product-details">
-        <h3>${p.name}</h3>
-        <div class="price">₹${p.price}/pc</div>
-        <div class="box">Box: ${p.box_qty} pcs → ₹${boxPrice}</div>
+<div class="product">
+  <img src="${p.image_url}">
+  
+  <div class="product-details">
+    <h3>${p.name}</h3>
+    <div class="price">₹${p.price}/pc</div>
+    <div class="box">Box: ${p.box_qty} pcs → ₹${boxPrice}</div>
 
-        ${cart[p.id] ? `
-<div class="qty-control">
-  <button onclick="changeQty(${p.id}, -1)">−</button>
-  <span>${cart[p.id]} box</span>
-  <button onclick="changeQty(${p.id}, 1)">+</button>
-</div>
-` : `
-${cart[p.id] ? `
-  <div class="qty-control">
-    <button onclick="changeQty(${p.id}, -1)">−</button>
-    <span>${cart[p.id]} box</span>
-    <button onclick="changeQty(${p.id}, 1)">+</button>
-  </div>
-` : `
-  <button class="addbtn" onclick="addToCart(${p.id})">
-    + Add Box
-  </button>
-`}
-  <button class="addbtn" onclick="addToCart(${p.id})">
-    + Add Box
-  </button>
-`}
+    ${cart[p.id] ? `
+      <div class="qty-control">
+        <button class="minus" onclick="changeQty(${p.id}, -1)">−</button>
+<button class="plus" onclick="changeQty(${p.id}, 1)">+</button>
       </div>
-    </div>
-    `;
-  });   // ✅ THIS LINE WAS MISSING
+    ` : `
+      <button class="addbtn" onclick="addToCart(${p.id})">
+        + Add Box
+      </button>
+    `}
+  </div>
+</div>
+`;
 
   document.getElementById("products").innerHTML = html;
   }
@@ -402,12 +389,12 @@ function removeItem(id){
   delete cart[id];
   openCart();
   updateTotal();
+  renderProducts(products); // ✅ ADD THIS
 }
 
 function changeQty(id, change){
   cart[id] += change;
   if(cart[id] <= 0) delete cart[id];
-  openCart();
   updateTotal();
   renderProducts(products); // ✅ ADD THIS
 }
