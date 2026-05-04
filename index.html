@@ -35,7 +35,16 @@
   font-size: 14px;
   opacity: 0.95;
 }
+.tagline {
+  font-size: 14px;
+  opacity: 0.9;
+}
 
+.since {
+  font-size: 13px;
+  opacity: 0.8;
+  margin-top: 4px;
+}
 .header small {
   opacity: 0.85;
 }
@@ -60,22 +69,31 @@
 .topbar {
   display: flex;
   overflow-x: auto;
+  padding: 10px;
   gap: 10px;
-  padding: 12px 10px;
+  scrollbar-width: none;
+}
+
+.topbar::-webkit-scrollbar {
+  display: none;
 }
 
 .topbar div {
   flex: 0 0 auto;
   padding: 8px 16px;
-  border-radius: 25px;
   background: white;
+  border-radius: 20px;
   font-size: 13px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  white-space: nowrap;
 }
 
 .topbar .active {
-  background: #0d6efd;
+  background: linear-gradient(45deg, #0d6efd, #4da3ff);
   color: white;
+}
+  .topbar div:active {
+  transform: scale(0.95);
 }
 /* Product card */
 .product {
@@ -224,8 +242,8 @@ input {
 
 <div class="header">
   <h1>⚡ RUBY ELECTRICALS</h1>
-<p>Wholesale Electrical Supplier</p>
-<small>Fast • Reliable • Best Prices</small>
+  <p class="tagline">Trader & Manufacturer of Electrical Accessories</p>
+  <p class="since">Since 1995 • Trusted Supplier</p>
 </div>
 
 <div class="search">
