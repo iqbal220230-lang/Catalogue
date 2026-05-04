@@ -326,16 +326,15 @@ function sendWhatsAppOrder() {
 
   message += "%0A💰 *Total: ₹" + total + "*";
 
-  fetch("https://script.google.com/macros/s/AKfycbw3Vy2gjHxP1kUocQoYjebtoTTL8tmzgs6WCj6zbGtaODIyMAYIoxJJ2gMiVhd-Y4TV/exec", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      name: name,
-      mobile: phone,
-      products: productLines.join("\n"),
-      total: total
-    })
-  }).catch(() => {});
+ fetch("https://script.google.com/macros/s/AKfycbw3Vy2gjHxP1kUocQoYjebtoTTL8tmzgs6WCj6zbGtaODIyMAYIoxJJ2gMiVhd-Y4TV/exec", {
+  method: "POST",
+  body: JSON.stringify({
+    name: name,
+    mobile: phone,
+    products: productLines.join("\n"),
+    total: total
+  })
+});
 
   let phoneNumber = "917859960073"; // 🔴 CHANGE THIS
   window.open("https://wa.me/" + phoneNumber + "?text=" + encodeURIComponent(message), "_blank");
