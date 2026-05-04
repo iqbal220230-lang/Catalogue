@@ -376,9 +376,11 @@ function sendWhatsAppOrder() {
     return;
   }
 
-  let message = "📦 *ORDER SUMMARY*%0A%0A";
-  message += "👤 Name: " + name + "%0A";
-  message += "📞 Phone: " + phone + "%0A%0A";
+  let message = "🧾 *RUBY ELECTRICALS ORDER*\n\n";
+message += "👤 Customer: " + name + "\n";
+message += "📞 Mobile: " + phone + "\n\n";
+message += "📦 Order Details:\n";
+message += "--------------------------------\n";
 
   let total = 0;
   let productLines = [];
@@ -389,14 +391,16 @@ function sendWhatsAppOrder() {
     let pcs = qty * p.box_qty;
     let price = p.price * pcs;
 
-    message += "🔹 " + p.name + "%0A";
-    message += "   " + qty + " box (" + pcs + " pcs) = ₹" + price + "%0A%0A";
+    message += "🔹 " + p.name + "\n";
+message += "   Qty: " + qty + " box (" + pcs + " pcs)\n";
+message += "   Price: ₹" + price + "\n\n";
 
     productLines.push(p.name + " - " + qty + " box (" + pcs + " pcs) = ₹" + price);
     total += price;
   }
 
-  message += "%0A💰 *Total: ₹" + total + "*";
+  message += "--------------------------------\n\n";
+message += "💰 *Total Amount: ₹" + total + "*";
 
  fetch("https://script.google.com/macros/s/AKfycbw3Vy2gjHxP1kUocQoYjebtoTTL8tmzgs6WCj6zbGtaODIyMAYIoxJJ2gMiVhd-Y4TV/exec", {
   method: "POST",
