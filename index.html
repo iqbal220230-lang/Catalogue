@@ -98,18 +98,33 @@
 
 /* Button */
 .addbtn {
-  width: 100%;
-  padding: 14px;
   background: #28a745;
   color: white;
+  padding: 14px;
   border: none;
-  border-radius: 12px;
-  margin-top: 15px;
-  font-size: 16px;
-  text-align: center;
-  display: block;
-}
+  border-radius: 10px;
 
+  width: 100%;
+  display: block;
+
+  text-align: center;
+  margin: 10px 0;
+
+  box-sizing: border-box;
+}
+.backbtn {
+  width: 100%;
+  padding: 14px;
+  margin-top: 10px;
+  border-radius: 10px;
+  border: none;
+  background: #ccc;
+
+  display: block;
+  text-align: center;
+
+  box-sizing: border-box;
+}
 /* Cart bar */
 .cartbar {
   position: fixed;
@@ -318,7 +333,7 @@ function openCart() {
 
   html += `
   <button onclick="checkout()" class="addbtn">📲 Order on WhatsApp</button>
-  <button class="btn-dark" onclick="closeCart()">Close</button>
+  <button class="backbtn" onclick="closeCart()">Close</button>
   `;
 
   document.getElementById("cartScreen").innerHTML = html;
@@ -339,7 +354,7 @@ function checkout() {
     <input id="mobile" placeholder="Mobile Number">
 
     <button class="addbtn" onclick="sendWhatsAppOrder()">📲 Send Order</button>
-    <button class="btn-dark" onclick="openCart()">← Back</button>
+    <button class="backbtn" onclick="openCart()">← Back</button>
   `;
 
   document.getElementById("cartScreen").innerHTML = html;
