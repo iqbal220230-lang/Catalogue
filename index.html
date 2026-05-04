@@ -262,6 +262,32 @@ input {
   font-weight: 600;
   box-shadow: 0 4px 10px rgba(0,0,0,0.08);
 }
+  .qty-control {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #16A34A;
+  border-radius: 12px;
+  padding: 6px;
+  margin-top: 8px;
+}
+
+.qty-control button {
+  background: white;
+  border: none;
+  border-radius: 8px;
+  width: 28px;
+  height: 28px;
+  font-size: 16px;
+  font-weight: bold;
+  color: #16A34A;
+}
+
+.qty-control span {
+  color: white;
+  font-weight: 600;
+  font-size: 13px;
+}
 </style></head><body>
 
 <div class="header">
@@ -336,9 +362,24 @@ list.forEach(p => {
         <div class="price">₹${p.price}/pc</div>
         <div class="box">Box: ${p.box_qty} pcs → ₹${boxPrice}</div>
 
-        <button class="addbtn" onclick="addToCart(${p.id})">
-          + Add Box ${cart[p.id] ? `(${cart[p.id]} box)` : ""}
-        </button>
+        ${cart[p.id] ? `
+<div class="qty-control">
+  <button onclick="changeQty(${p.id}, -1)">−</button>
+  <span>${cart[p.id]} box</span>
+  <button onclick="changeQty(${p.id}, 1)">+</button>
+</div>
+` : `
+${cart[p.id] ? `
+  <div class="qty-control">
+    <button onclick="changeQty(${p.id}, -1)">−</button>
+    <span>${cart[p.id]} box</span>
+    <button onclick="changeQty(${p.id}, 1)">+</button>
+  </div>
+` : `
+  <button class="addbtn" onclick="addToCart(${p.id})">
+    + Add Box
+  </button>
+`}
       </div>
     </div>
     `;
@@ -364,6 +405,7 @@ function changeQty(id, change){
   if(cart[id] <= 0) delete cart[id];
   openCart();
   updateTotal();
+  renderProducts(products); // ✅ ADD THIS
 }
 
 function updateTotal(){
