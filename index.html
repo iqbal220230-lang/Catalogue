@@ -323,10 +323,8 @@ function searchProduct(text){
 
 function renderProducts(list){
   let html="";
-  function renderProducts(list){
-  let html = "";
-
-  list.forEach(p => {
+  
+list.forEach(p => {
     let boxPrice = p.price * p.box_qty;
 
     html += `
