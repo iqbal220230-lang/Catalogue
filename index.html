@@ -7,10 +7,10 @@
 
 <style>
   body {
-  font-family: Arial, sans-serif;
+  font-family: 'Inter', Arial, sans-serif;
   margin: 0;
-  background: linear-gradient(to bottom, #f4f6f9, #eef2f7);
-    overflow-x: hidden;
+  background: #F5F7FA;
+  color: #111827;
 }
 
 /* Header */
@@ -99,12 +99,14 @@
 }
 /* Product card */
 .product {
-  background: white;
+  display: flex;
+  gap: 12px;
+  background: #FFFFFF;
   margin: 12px;
-  padding: 12px;
-  border-radius: 18px;
-  box-shadow: 0 4px 14px rgba(0,0,0,0.08);
-  transition: 0.2s;
+  padding: 14px;
+  border-radius: 16px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+  align-items: center;
 }
 
 .product:active {
@@ -112,39 +114,39 @@
 }
 
 .product img {
-  width: 100%;
-  height: 160px;
+  width: 70px;
+  height: 70px;
   object-fit: cover;
   border-radius: 12px;
 }
-
+.product-details {
+  flex: 1;
+}
 .product h3 {
-  margin: 10px 0 6px;
-  font-size: 16px;
+  margin: 0;
+  font-size: 15px;
   font-weight: 600;
 }
 
 .price {
-  font-weight: bold;
-  font-size: 15px;
+  font-weight: 700;
+  font-size: 14px;
+  margin-top: 4px;
 }
 
 .box {
-  color: #666;
-  font-size: 13px;
+  color: #6B7280;
+  font-size: 12px;
 }
 
 /* Button */
 .addbtn {
-  width: 100%;
-  padding: 13px;
+  margin-top: 8px;
+  padding: 10px;
   border-radius: 12px;
   border: none;
-  background: linear-gradient(135deg, #28a745, #34d058);
+  background: #16A34A;
   color: white;
-  display: block;
-  margin-top: 12px;
-  font-size: 14px;
   font-weight: 600;
 }
 .backbtn {
@@ -163,20 +165,22 @@
   bottom: 10px;
   left: 10px;
   right: 10px;
-  width: auto;
-  background: black;
+  background: #111827;
   color: white;
-  padding: 12px 16px;
+  padding: 14px 16px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border-radius: 15px;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+  border-radius: 16px;
+  box-shadow: 0 -2px 10px rgba(0,0,0,0.15);
 }
   .cartbar button {
-  margin: 0;
-  padding: 8px 12px;
-  border-radius: 8px;
+  background: white;
+  color: #111827;
+  border-radius: 999px;
+  padding: 8px 16px;
+  border: none;
+  font-weight: 500;
 }
 #overlay {
   position: fixed;
@@ -207,12 +211,35 @@ box-sizing: border-box;
   display: none;
   z-index: 1000;
 }
+  .cart-content {
+  padding: 10px;
+}
+
+.cart-content .product {
+  background: #F9FAFB;
+  border-radius: 12px;
+  padding: 10px;
+  margin-bottom: 10px;
+}
 /* Cart buttons */
 .cart-btn {
+  border-radius: 50%;
   padding: 6px 10px;
-  border-radius: 6px;
-  border: none;
-  margin: 5px 5px 0 0;
+}
+
+.plus {
+  background: #16A34A;
+  color: white;
+}
+
+.minus {
+  background: #FACC15;
+}
+
+.remove {
+  background: #f87171;
+  color: white;
+  border-radius: 8px;
 }
 
 .plus { background: #28a745; color: white; }
@@ -221,24 +248,19 @@ box-sizing: border-box;
 
 /* Form */
 input {
-  width: 100%;
-  padding: 12px;
-  margin: 10px 0;
-  border-radius: 10px;
-  border: 1px solid #ccc;
-  box-sizing: border-box;
-}
-.btn-dark {
-  width: 100%;
-  padding: 14px;
-  background: #ccc;
-  color: black;
+  background: #F3F4F6;
   border: none;
   border-radius: 12px;
-  margin-top: 10px;
-  font-size: 16px;
-  text-align: center;
-  display: block;
+  padding: 12px;
+  margin: 10px 0;
+}
+.btn-dark {
+  background: #16A34A;
+  color: white;
+  border-radius: 12px;
+  padding: 14px;
+  font-weight: 600;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.08);
 }
 </style></head><body>
 
@@ -307,7 +329,12 @@ function renderProducts(list){
     html += `
     <div class="product">
       <img src="${p.image_url}">
-      <h3>${p.name}</h3>
+<div class="product-details">
+  <h3>${p.name}</h3>
+  <div class="price">₹${p.price}/pc</div>
+  <div class="box">Box: ${p.box_qty} pcs → ₹${boxPrice}</div>
+  <button class="addbtn" onclick="addToCart(${p.id})">+ Add Box</button>
+</div>
       <div class="price">₹${p.price}/pc</div>
       <div class="box">Box: ${p.box_qty} pcs → ₹${boxPrice}</div>
       <button class="addbtn" onclick="addToCart(${p.id})">+ Add Box</button>
