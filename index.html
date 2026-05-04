@@ -323,27 +323,31 @@ function searchProduct(text){
 
 function renderProducts(list){
   let html="";
-  list.forEach(p=>{
+  function renderProducts(list){
+  let html = "";
+
+  list.forEach(p => {
     let boxPrice = p.price * p.box_qty;
 
     html += `
-<div class="product">
-  <img src="${p.image_url}">
-  
-  <div class="product-details">
-    <h3>${p.name}</h3>
-    <div class="price">₹${p.price}/pc</div>
-    <div class="box">Box: ${p.box_qty} pcs → ₹${boxPrice}</div>
+    <div class="product">
+      <img src="${p.image_url}">
+      
+      <div class="product-details">
+        <h3>${p.name}</h3>
+        <div class="price">₹${p.price}/pc</div>
+        <div class="box">Box: ${p.box_qty} pcs → ₹${boxPrice}</div>
 
-    <button class="addbtn" onclick="addToCart(${p.id})">
-      + Add Box ${cart[p.id] ? `(${cart[p.id]} box)` : ""}
-    </button>
-  </div>
-</div>
-`;
+        <button class="addbtn" onclick="addToCart(${p.id})">
+          + Add Box ${cart[p.id] ? `(${cart[p.id]} box)` : ""}
+        </button>
+      </div>
+    </div>
+    `;
+  });   // ✅ THIS LINE WAS MISSING
 
   document.getElementById("products").innerHTML = html;
-}
+  }
 
 function addToCart(id){
   cart[id] = (cart[id] || 0) + 1;
