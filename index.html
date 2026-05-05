@@ -422,7 +422,7 @@ function openCart() {
   if (Object.keys(cart).length === 0) {
     html += "<p>Your cart is empty</p>";
   }
-
+  let total = 0;
   for (let id in cart) {
     let p = products.find(x => x.id == Number(id));
     if (!p) continue;
@@ -430,7 +430,8 @@ function openCart() {
     let qty = cart[id];
     let pcs = qty * p.box_qty;
     let price = p.price * pcs;
-
+    total += price;
+   
     html += `
     <div class="product">
       <b>${p.name}</b><br>
@@ -444,6 +445,10 @@ function openCart() {
   }
 
   html += `
+<div style="margin:15px 0; font-weight:700; font-size:18px;">
+  💰 Total: ₹${total}
+</div>
+`;
   <button onclick="checkout()" class="addbtn">📲 Order on WhatsApp</button>
   <button class="backbtn" onclick="closeCart()">Close</button>
   </div>
