@@ -395,12 +395,16 @@ function removeItem(id){
   openCart();   //  MOVE HERE (LAST)
 }
 
-function changeQty(id, change){
+function changeQty(id, change, fromCart = false){
   cart[id] += change;
   if(cart[id] <= 0) delete cart[id];
 
   updateTotal();
   renderProducts(products);
+
+  if(fromCart){
+    openCart();   // ✅ Only open when from cart
+  }
 }
 
 function updateTotal(){
@@ -436,8 +440,8 @@ function openCart() {
       <b>${p.name}</b><br>
       ${qty} box (${pcs} pcs) - ₹${price}<br><br>
 
-      <button class="cart-btn plus" onclick="changeQty(${id},1)">+</button>
-      <button class="cart-btn minus" onclick="changeQty(${id},-1)">-</button>
+      <button class="cart-btn plus" onclick="changeQty(${id},1,true)">+</button>
+<button class="cart-btn minus" onclick="changeQty(${id},-1,true)">-</button>
       <button class="cart-btn remove" onclick="removeItem(${id})">Remove</button>
     </div>
     `;
