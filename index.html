@@ -448,11 +448,11 @@ function openCart() {
 <div style="margin:15px 0; font-weight:700; font-size:18px;">
   💰 Total: ₹${total}
 </div>
+
+<button onclick="checkout()" class="addbtn">📲 Order on WhatsApp</button>
+<button class="backbtn" onclick="closeCart()">Close</button>
+</div>
 `;
-  <button onclick="checkout()" class="addbtn">📲 Order on WhatsApp</button>
-  <button class="backbtn" onclick="closeCart()">Close</button>
-  </div>
-  `;
 
   document.getElementById("cartScreen").innerHTML = html;
   document.getElementById("cartScreen").style.display = "block";
