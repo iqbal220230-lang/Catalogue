@@ -389,16 +389,19 @@ function addToCart(id){
 
 function removeItem(id){
   delete cart[id];
-  openCart();
+
   updateTotal();
-  renderProducts(products); // ✅ ADD THIS
+  renderProducts(products);
+  openCart();   // 🔥 MOVE HERE (LAST)
 }
 
 function changeQty(id, change){
   cart[id] += change;
   if(cart[id] <= 0) delete cart[id];
+
   updateTotal();
-  renderProducts(products); // ✅ ADD THIS
+  renderProducts(products);
+  openCart();   // 🔥 THIS IS THE FIRST CHANGE
 }
 
 function updateTotal(){
